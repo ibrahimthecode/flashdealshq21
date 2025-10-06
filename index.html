@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>FlashDeals</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --gold: #D4AF37;
+      --dark-gold: #B8941F;
+      --deep-navy: #0A0E27;
+      --soft-white: #F8F9FA;
+      --accent-purple: #6B46C1;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(135deg, #0A0E27 0%, #1a1f3a 100%);
+      color: var(--soft-white);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* Animated background particles */
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle at 20% 50%, rgba(212, 175, 55, 0.1) 0%, transparent 50%),
+                  radial-gradient(circle at 80% 80%, rgba(107, 70, 193, 0.1) 0%, transparent 50%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .custom-navbar {
+      background: rgba(10, 14, 39, 0.95);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(212, 175, 55, 0.3);
+      padding: 1.5rem 0;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      animation: slideDown 0.8s ease-out;
+    }
+
+    @keyframes slideDown {
+      from {
+        transform: translateY(-100%);
+        opacity: 0;
+      }
+      to {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+
+    .navbar-brand img {
+      filter: drop-shadow(0 0 20px rgba(212, 175, 55, 0.4));
+      transition: all 0.4s ease;
+    }
+
+    .navbar-brand img:hover {
+      filter: drop-shadow(0 0 30px rgba(212, 175, 55, 0.7));
+      transform: scale(1.05);
+    }
+
+    .container {
+      position: relative;
+      z-index: 1;
+    }
+
+    h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: 4.5rem;
+      font-weight: 700;
+      background: linear-gradient(135deg, var(--gold) 0%, #FFD700 50%, var(--gold) 100%);
+      background-size: 200% 200%;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      text-align: center;
+      margin: 3rem 0;
+      letter-spacing: 3px;
+      font-style: italic;
+      animation: fadeInUp 1s ease-out, shimmer 3s infinite;
+      position: relative;
+    }
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes shimmer {
+      0%, 100% {
+        background-position: 0% 50%;
+      }
+      50% {
+        background-position: 100% 50%;
+      }
+    }
+
+    .category-card {
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(212, 175, 55, 0.2);
+      border-radius: 20px;
+      overflow: hidden;
+      transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
+      animation: fadeInUp 0.8s ease-out;
+      animation-fill-mode: both;
+    }
+
+    .col:nth-child(1) .category-card { animation-delay: 0.1s; }
+    .col:nth-child(2) .category-card { animation-delay: 0.2s; }
+    .col:nth-child(3) .category-card { animation-delay: 0.3s; }
+    .col:nth-child(4) .category-card { animation-delay: 0.4s; }
+    .col:nth-child(5) .category-card { animation-delay: 0.5s; }
+    .col:nth-child(6) .category-card { animation-delay: 0.6s; }
+    .col:nth-child(7) .category-card { animation-delay: 0.7s; }
+
+    .category-card::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle, rgba(212, 175, 55, 0.15) 0%, transparent 70%);
+      opacity: 0;
+      transition: opacity 0.5s ease;
+    }
+
+    .category-card:hover::before {
+      opacity: 1;
+    }
+
+    .category-card:hover {
+      transform: translateY(-15px) scale(1.02);
+      border-color: var(--gold);
+      box-shadow: 0 20px 60px rgba(212, 175, 55, 0.4);
+    }
+
+    .category-card img {
+      height: 280px;
+      object-fit: cover;
+      transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+      width: 100%;
+    }
+
+    .category-card:hover img {
+      transform: scale(1.15);
+    }
+
+    .card-body {
+      text-align: center;
+      padding: 2rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    .card-title {
+      font-family: 'Playfair Display', serif;
+      font-weight: 600;
+      font-size: 1.4rem;
+      margin-bottom: 1.5rem;
+      color: var(--soft-white);
+      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--gold) 0%, var(--dark-gold) 100%);
+      border: none;
+      padding: 0.9rem 2.5rem;
+      font-weight: 600;
+      letter-spacing: 1px;
+      border-radius: 50px;
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
+      overflow: hidden;
+      text-transform: uppercase;
+      font-size: 0.95rem;
+      color: var(--deep-navy);
+    }
+
+    .btn-primary::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 0;
+      height: 0;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.3);
+      transform: translate(-50%, -50%);
+      transition: width 0.6s ease, height 0.6s ease;
+    }
+
+    .btn-primary:hover::before {
+      width: 300px;
+      height: 300px;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 30px rgba(212, 175, 55, 0.5);
+      background: linear-gradient(135deg, #FFD700 0%, var(--gold) 100%);
+      color: var(--deep-navy);
+    }
+
+    @media (max-width: 768px) {
+      h1 {
+        font-size: 2.5rem;
+        letter-spacing: 1px;
+      }
+
+      .category-card img {
+        height: 200px;
+      }
+
+      .card-title {
+        font-size: 1.2rem;
+      }
+
+      .btn-primary {
+        padding: 0.7rem 2rem;
+        font-size: 0.85rem;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <nav class="navbar navbar-expand-lg navbar-dark custom-navbar">
+    <div class="container">
+      <a class="navbar-brand" href="index.html">
+        <img src="images/ChatGPT Image Jul 11, 2025, 08_53_28 AM.png" alt="FlashDeals-HQ Logo" height="80" width="250">
+      </a>
+    </div>
+  </nav>
+
+  <div class="container py-5">
+    <h1 class="mb-4">FlashDeals-HQ</h1>
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+      
+      <div class="col">
+        <div class="card h-100 category-card">
+          <img src="https://media.istockphoto.com/id/1352758440/photo/paper-shopping-food-bag-with-grocery-and-vegetables.jpg?s=612x612&w=0&k=20&c=iEYDgT97dpF7DuG4-QUJU3l0-5MKQb01mKbQgEG1pcc="
+            class="card-img-top" alt="Groceries">
+          <div class="card-body">
+            <h5 class="card-title">Groceries</h5>
+            <a href="groceries.html" class="btn btn-primary">Shop Now</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="col">
+        <div class="card h-100 category-card">
+          <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSTO8EQzcqUX7lCkNMQdHDNH5ODc2Z8vjMWIQ&s"
+            class="card-img-top" alt="Appliances">
+          <div class="card-body">
+            <h5 class="card-title">Cleaning & Household Supplies</h5>
+            <a href="appliances.html" class="btn btn-primary">Shop Now</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="col">
+        <div class="card h-100 category-card">
+          <img src="https://media.istockphoto.com/id/584574708/photo/soap-bar-and-liquid-shampoo-shower-gel-towels-spa-kit.jpg?s=612x612&w=0&k=20&c=TFeQmTwVUwKY0NDKFFORe3cwDCxRtotFgEujMswn3dc="
+            class="card-img-top" alt="Personal Care">
+          <div class="card-body">
+            <h5 class="card-title">Personal Care</h5>
+            <a href="personal-care.html" class="btn btn-primary">Shop Now</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="col">
+        <div class="card h-100 category-card">
+          <img src="https://media.istockphoto.com/id/584574708/photo/soap-bar-and-liquid-shampoo-shower-gel-towels-spa-kit.jpg?s=612x612&w=0&k=20&c=TFeQmTwVUwKY0NDKFFORe3cwDCxRtotFgEujMswn3dc="
+            class="card-img-top" alt="Tools">
+          <div class="card-body">
+            <h5 class="card-title">Tools</h5>
+            <a href="tools.html" class="btn btn-primary">Shop Now</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="col">
+        <div class="card h-100 category-card">
+          <img src="https://media.istockphoto.com/id/1136317339/photo/sports-equipment-on-floor.jpg?s=612x612&w=0&k=20&c=-aI8u_Se89IC-HJZYH724ei5z-bIcSvRW6qUwyMtRyE="
+            class="card-img-top" alt="Sports">
+          <div class="card-body">
+            <h5 class="card-title">Sporting Goods</h5>
+            <a href="sports.html" class="btn btn-primary">Shop Now</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="col">
+        <div class="card h-100 category-card">
+          <img src="https://cdn.pixabay.com/photo/2024/05/23/15/11/teddy-8783348_640.jpg"
+            class="card-img-top" alt="Toys">
+          <div class="card-body">
+            <h5 class="card-title">Toys</h5>
+            <a href="toys.html" class="btn btn-primary">Shop Now</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="col">
+        <div class="card h-100 category-card">
+          <img src="https://cdn.mos.cms.futurecdn.net/acd486d5e0ac99660e8bf382340508ff.jpg"
+            class="card-img-top" alt="Technology">
+          <div class="card-body">
+            <h5 class="card-title">Technology</h5>
+            <a href="technology.html" class="btn btn-primary">Shop Now</a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
